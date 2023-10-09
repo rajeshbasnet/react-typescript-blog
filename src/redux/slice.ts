@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type StateProps = {
+export type StateProps = {
   value: string[];
 };
 
