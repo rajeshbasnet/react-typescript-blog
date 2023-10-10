@@ -9,8 +9,6 @@ export default function BlogList() {
   return (
     <section className="blog__list__section w-[40%] my-6 mx-auto">
       {blogList.map((item) => {
-        console.log(item);
-
         return (
           <div key={item.id}>
             <p>{item.title}</p>
