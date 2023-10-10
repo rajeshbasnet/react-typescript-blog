@@ -1,12 +1,9 @@
 import React from "react";
-import BlogForm from "../../components/form/BlogForm";
+import "./Homepage.css";
+import Blog from "../../components/blog/Blog";
 
 const Homepage: React.FC = () => {
-  return (
-    <div className="w-full flex items-center justify-center">
-      <BlogForm />
-    </div>
-  );
+  return <Blog />;
 };
 
 export default Homepage;

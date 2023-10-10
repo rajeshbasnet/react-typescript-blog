@@ -8,11 +8,14 @@ type BlogPayload<T> = {
   payload: T;
 };
 
-const addBlog = (state: InitialStateProps, action: BlogPayload<Blog>) => {
-  state.blog = [...state.blog, action.payload];
+const addBlogFn = (state: InitialStateProps, action: BlogPayload<Blog>) => {
+  state.blog.push(action.payload);
 };
 
-const removeBlog = (state: InitialStateProps, action: BlogPayload<number>) => {
+const removeBlogFn = (
+  state: InitialStateProps,
+  action: BlogPayload<number>
+) => {
   const id = action.payload;
 
   const newBlogList = state.blog.filter((_, index) => index !== id);
@@ -23,11 +26,15 @@ const initialState: InitialStateProps = {
   blog: [],
 };
 
-export const slice = createSlice({
+export const blogSlice = createSlice({
   name: blog,
   initialState,
   reducers: {
-    addBlog,
-    removeBlog,
+    addBlog: addBlogFn,
+    removeBlog: removeBlogFn,
   },
 });
+
+export const { addBlog, removeBlog } = blogSlice.actions;
+
+export default blogSlice.reducer;

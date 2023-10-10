@@ -2,10 +2,14 @@ import { Button, TextField } from "@mui/material";
 import "@fontsource/roboto/400.css";
 import React, { useState } from "react";
 import { Blog } from "../../types/Blog.types";
+import { useDispatch } from "react-redux";
+import { addBlog } from "../../redux/slice";
 
 export default function BlogForm() {
+  const dispatch = useDispatch();
+
   let [blogInfo, setBlogInfo] = useState<Blog>({
-    id: "",
+    id: crypto.randomUUID(),
     title: "",
     content: "",
   });
@@ -23,11 +27,17 @@ export default function BlogForm() {
     });
   }
 
-  function addBlogHandler(event: React.FormEvent) {}
+  function addBlogHandler(event: React.FormEvent) {
+    event.preventDefault();
+
+    if (blogInfo.title && blogInfo.content) {
+      dispatch(addBlog(blogInfo));
+    }
+  }
 
   return (
-    <section className="blog__form__section w-[40%] my-6">
-      <form className="w-full">
+    <section className="blog__form__section w-[40%] my-6 mx-auto">
+      <form className="w-full" onSubmit={addBlogHandler}>
         <TextField
           name="title"
           className="w-full"
