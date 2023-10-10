@@ -23,6 +23,7 @@ export default function BlogForm() {
     });
   }
 
+  function addBlogHandler(event: React.FormEvent) {}
 
   return (
     <section className="blog__form__section w-[40%] my-6">
