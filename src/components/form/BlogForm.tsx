@@ -40,7 +40,7 @@ export default function BlogForm() {
   }
 
   return (
-    <section className="blog__form__section w-[40%] my-6 mx-auto">
+    <section className="blog__form__section">
       <form className="w-full" onSubmit={addBlogHandler}>
         <TextField
           name="title"
