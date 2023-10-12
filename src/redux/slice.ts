@@ -28,10 +28,10 @@ const updateBlogFn = (state: InitialStateProps, action: BlogPayload<Blog>) => {
 
 const removeBlogFn = (
   state: InitialStateProps,
-  action: BlogPayload<number>
+  action: BlogPayload<string>
 ) => {
   const id = action.payload;
-  const newBlogList = state.blog.filter((_, index) => index !== id);
+  const newBlogList = state.blog.filter((blogItem) => blogItem.id !== id);
   state.blog = newBlogList;
 };
 

@@ -13,7 +13,7 @@ import "@fontsource/roboto/500.css";
 import React from "react";
 import BlogForm from "../form/BlogForm";
 import { useDispatch } from "react-redux";
-import { addBlogInfo, updateIsUpdate } from "../../redux/slice";
+import { addBlogInfo, removeBlog, updateIsUpdate } from "../../redux/slice";
 
 /**
  * TODO : Add badge feature in blog - tags
@@ -40,6 +40,10 @@ export default function BlogList() {
 
     const foundBlog = id && blogList.find((blog) => blog.id === id);
     foundBlog && dispatch(addBlogInfo(foundBlog));
+  }
+
+  function deleteBlog(id: string | undefined) {
+    id && dispatch(removeBlog(id));
   }
 
   return (
@@ -77,7 +81,11 @@ export default function BlogList() {
                 >
                   Update
                 </Button>
-                <Button variant="contained" color="error">
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => deleteBlog(item.id)}
+                >
                   Delete
                 </Button>
               </div>
