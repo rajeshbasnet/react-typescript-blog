@@ -1,10 +1,38 @@
 import React from "react";
 import Blog from "../../components/blog/Blog";
+import { Alert } from "@mui/material";
+import { useSelector } from "react-redux";
+import { InitialStateProps } from "../../types/InitialStateProps.types";
 
 //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
 
 const Homepage: React.FC = () => {
-  return <Blog />;
+  const success = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.success
+  );
+
+  const error = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.error
+  );
+
+  const { status: successStatus, message: successMessage } = success;
+
+  const { status: errorStatus, message: errorMessage } = error;
+
+  return (
+    <>
+      <Blog />
+
+      <div className="absolute top-[2%] right-[2%]">
+        {successStatus ? (
+          <Alert severity="success">{successMessage}</Alert>
+        ) : (
+          <></>
+        )}
+        {errorStatus ? <Alert severity="error">{errorMessage}</Alert> : <></>}
+      </div>
+    </>
+  );
 };
 
 export default Homepage;

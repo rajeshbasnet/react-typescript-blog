@@ -9,6 +9,8 @@ import "@fontsource/roboto/400.css";
 import {
   addBlog,
   addBlogInfo,
+  addSuccess,
+  resetSuccess,
   updateBlog,
   updateIsUpdate,
 } from "../../redux/slice";
@@ -55,9 +57,19 @@ export default function BlogForm() {
         dispatch(updateBlog(blogInfo));
         dispatch(updateIsUpdate());
       }
-
-      // TODO : Add a toast or alert
+      dispatch(
+        addSuccess({
+          status: true,
+          message: `Blog ${isUpdate ? "update" : "added"} successfully`,
+        })
+      );
       dispatch(addBlogInfo(initialBlogInfo));
+
+      const timeoutID = setTimeout(() => {
+        dispatch(resetSuccess());
+      }, 2000);
+
+      clearTimeout(timeoutID);
     }
   }
 

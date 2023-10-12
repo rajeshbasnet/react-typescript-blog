@@ -1,7 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { blog } from "../util/Util";
 import { Blog } from "../types/Blog.types";
-import { InitialStateProps } from "../types/InitialStateProps.types";
+import {
+  InitialStateProps,
+  StatusProps,
+} from "../types/InitialStateProps.types";
 
 type BlogPayload<T> = {
   type: string;
@@ -46,10 +49,46 @@ const updateIsUpdateFn = (state: InitialStateProps) => {
   state.isUpdate = !state.isUpdate;
 };
 
+const addSuccessFn = (
+  state: InitialStateProps,
+  action: PayloadAction<StatusProps>
+) => {
+  state.success = action.payload;
+};
+
+const addErrorFn = (
+  state: InitialStateProps,
+  action: PayloadAction<StatusProps>
+) => {
+  state.error = action.payload;
+};
+
+const resetSuccessFn = (state: InitialStateProps) => {
+  state.success = {
+    status: false,
+    message: "",
+  };
+};
+
+const resetErrorFn = (state: InitialStateProps) => {
+  state.error = {
+    status: false,
+    message: "",
+  };
+};
+
 const initialState: InitialStateProps = {
   blog: [],
   blogInfo,
   isUpdate: false,
+  success: {
+    status: false,
+    message: "",
+  },
+  error: {
+    status: false,
+    message: "",
+  },
 };
 
 export const blogSlice = createSlice({
@@ -61,10 +100,23 @@ export const blogSlice = createSlice({
     removeBlog: removeBlogFn,
     addBlogInfo: addOrUpdateBlogInfoFn,
     updateIsUpdate: updateIsUpdateFn,
+    addSuccess: addSuccessFn,
+    addError: addErrorFn,
+    resetSuccess: resetSuccessFn,
+    resetError: resetErrorFn,
   },
 });
 
-export const { addBlog, removeBlog, addBlogInfo, updateIsUpdate, updateBlog } =
-  blogSlice.actions;
+export const {
+  addBlog,
+  removeBlog,
+  addBlogInfo,
+  updateIsUpdate,
+  updateBlog,
+  addSuccess,
+  addError,
+  resetSuccess,
+  resetError,
+} = blogSlice.actions;
 
 export default blogSlice.reducer;

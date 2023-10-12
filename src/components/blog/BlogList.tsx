@@ -13,7 +13,13 @@ import "@fontsource/roboto/500.css";
 import React from "react";
 import BlogForm from "../form/BlogForm";
 import { useDispatch } from "react-redux";
-import { addBlogInfo, removeBlog, updateIsUpdate } from "../../redux/slice";
+import {
+  addBlogInfo,
+  addSuccess,
+  removeBlog,
+  resetSuccess,
+  updateIsUpdate,
+} from "../../redux/slice";
 
 /**
  * TODO : Add badge feature in blog - tags
@@ -44,6 +50,18 @@ export default function BlogList() {
 
   function deleteBlog(id: string | undefined) {
     id && dispatch(removeBlog(id));
+    dispatch(
+      addSuccess({
+        status: true,
+        message: "Blog removed successfully",
+      })
+    );
+
+    const timeoutID = setTimeout(() => {
+      dispatch(resetSuccess());
+    }, 1000);
+
+    clearTimeout(timeoutID);
   }
 
   return (
