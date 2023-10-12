@@ -5,14 +5,16 @@ import { Blog } from "../../types/Blog.types";
 import { useDispatch } from "react-redux";
 import { addBlog } from "../../redux/slice";
 
+const blogInfoInitial = {
+  id: crypto.randomUUID(),
+  title: "",
+  content: "",
+};
+
 export default function BlogForm() {
   const dispatch = useDispatch();
 
-  let [blogInfo, setBlogInfo] = useState<Blog>({
-    id: crypto.randomUUID(),
-    title: "",
-    content: "",
-  });
+  const [blogInfo, setBlogInfo] = useState<Blog>(blogInfoInitial);
 
   function blogOnChangeHandler(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -32,6 +34,8 @@ export default function BlogForm() {
 
     if (blogInfo.title && blogInfo.content) {
       dispatch(addBlog(blogInfo));
+      // TODO : Add a toast or alert
+      setBlogInfo(blogInfoInitial);
     }
   }
 
