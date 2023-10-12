@@ -1,11 +1,21 @@
+import React from "react";
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
 import { Button, TextField } from "@mui/material";
 import "@fontsource/roboto/400.css";
-import React, { useState } from "react";
-import { Blog } from "../../types/Blog.types";
-import { useDispatch } from "react-redux";
-import { addBlog } from "../../redux/slice";
 
-const blogInfoInitial = {
+import {
+  addBlog,
+  addBlogInfo,
+  updateBlog,
+  updateIsUpdate,
+} from "../../redux/slice";
+import { Blog } from "../../types/Blog.types";
+import { InitialStateProps } from "../../types/InitialStateProps.types";
+
+const initialBlogInfo: Blog = {
   id: crypto.randomUUID(),
   title: "",
   content: "",
@@ -14,28 +24,40 @@ const blogInfoInitial = {
 export default function BlogForm() {
   const dispatch = useDispatch();
 
-  const [blogInfo, setBlogInfo] = useState<Blog>(blogInfoInitial);
+  const blogInfo = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.blogInfo
+  );
+
+  const isUpdate = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.isUpdate
+  );
 
   function blogOnChangeHandler(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     event.preventDefault();
     const { name, value } = event.target;
-    setBlogInfo((prevState: Blog) => {
-      return {
-        ...prevState,
+    dispatch(
+      addBlogInfo({
+        ...blogInfo,
         [name]: value,
-      };
-    });
+      })
+    );
   }
 
   function addBlogHandler(event: React.FormEvent) {
     event.preventDefault();
 
     if (blogInfo.title && blogInfo.content) {
-      dispatch(addBlog(blogInfo));
+      if (!isUpdate) {
+        dispatch(addBlog(blogInfo));
+      } else {
+        dispatch(updateBlog(blogInfo));
+        dispatch(updateIsUpdate());
+      }
+
       // TODO : Add a toast or alert
-      setBlogInfo(blogInfoInitial);
+      dispatch(addBlogInfo(initialBlogInfo));
     }
   }
 
@@ -66,13 +88,23 @@ export default function BlogForm() {
           onChange={blogOnChangeHandler}
         />
 
-        <Button
-          variant="contained"
-          style={{ margin: "0.5rem 0" }}
-          type="submit"
-        >
-          Add your post
-        </Button>
+        {isUpdate ? (
+          <Button
+            variant="contained"
+            style={{ margin: "0.5rem 0" }}
+            type="submit"
+          >
+            Update your post
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            style={{ margin: "0.5rem 0" }}
+            type="submit"
+          >
+            Add your post
+          </Button>
+        )}
       </form>
     </section>
   );

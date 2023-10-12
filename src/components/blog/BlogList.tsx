@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { InitialStateProps } from "../../redux/types/InitialStateProps.types";
+import { InitialStateProps } from "../../types/InitialStateProps.types";
 import {
   Box,
   Button,
@@ -10,8 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import "@fontsource/roboto/500.css";
-import { useState } from "react";
+import React from "react";
 import BlogForm from "../form/BlogForm";
+import { useDispatch } from "react-redux";
+import { addBlogInfo, updateIsUpdate } from "../../redux/slice";
 
 /**
  * TODO : Add badge feature in blog - tags
@@ -19,22 +21,33 @@ import BlogForm from "../form/BlogForm";
  * @returns BlogList
  */
 export default function BlogList() {
+  const dispatch = useDispatch();
+
   const blogList = useSelector(
     (state: { blog: InitialStateProps }) => state.blog.blog
   );
 
-  const [updateFormOpen, setUpdateFormOpen] = useState<boolean>(false);
+  const isUpdate = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.isUpdate
+  );
 
-  function updateFormModal() {
-    setUpdateFormOpen(!updateFormOpen);
+  function updateIsFormInUpdateStatus() {
+    dispatch(updateIsUpdate());
+  }
+
+  function loadUpdateBlogModal(id: string | undefined) {
+    updateIsFormInUpdateStatus();
+
+    const foundBlog = id && blogList.find((blog) => blog.id === id);
+    foundBlog && dispatch(addBlogInfo(foundBlog));
   }
 
   return (
     <section className="blog__list__section">
       {blogList.map((item) => {
         return (
-          <>
-            <Box key={item.id} sx={{ margin: "3rem 0" }}>
+          <React.Fragment key={item.id}>
+            <Box sx={{ margin: "3rem 0" }}>
               <Paper
                 square={false}
                 variant="outlined"
@@ -60,7 +73,7 @@ export default function BlogList() {
                   variant="contained"
                   color="success"
                   sx={{ marginRight: "1rem" }}
-                  onClick={updateFormModal}
+                  onClick={() => loadUpdateBlogModal(item.id)}
                 >
                   Update
                 </Button>
@@ -70,7 +83,7 @@ export default function BlogList() {
               </div>
             </Box>
 
-            <Dialog open={updateFormOpen}>
+            <Dialog open={isUpdate}>
               <DialogTitle id="alert-dialog-title">
                 {"Update your Post Details"}
               </DialogTitle>
@@ -79,7 +92,7 @@ export default function BlogList() {
                 <BlogForm />
               </DialogContent>
             </Dialog>
-          </>
+          </React.Fragment>
         );
       })}
     </section>
