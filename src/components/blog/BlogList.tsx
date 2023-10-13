@@ -3,10 +3,12 @@ import { InitialStateProps } from "../../types/InitialStateProps.types";
 import {
   Box,
   Button,
+  Chip,
   Dialog,
   DialogContent,
   DialogTitle,
   Paper,
+  Stack,
   Typography,
 } from "@mui/material";
 import "@fontsource/roboto/500.css";
@@ -67,6 +69,8 @@ export default function BlogList() {
   return (
     <section className="blog__list__section">
       {blogList.map((item) => {
+        const { tags } = item;
+
         return (
           <React.Fragment key={item.id}>
             <Box sx={{ margin: "3rem 0" }}>
@@ -89,6 +93,12 @@ export default function BlogList() {
                   {item.content}
                 </Typography>
               </Paper>
+
+              <Stack direction="row" spacing={1}>
+                {tags.map((tag, index) => {
+                  return <Chip label={tag.toLowerCase()} key={index} />;
+                })}
+              </Stack>
 
               <div className="flex justify-end">
                 <Button

@@ -1,6 +1,6 @@
 import { Blog } from "./Blog.types";
 
-type StatusProps = {
+export type StatusProps = {
   status: boolean;
   message: string;
 };
@@ -11,4 +11,5 @@ export type InitialStateProps = {
   isUpdate: boolean;
   success: StatusProps;
   error: StatusProps;
+  tagList: string[];
 };

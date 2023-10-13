@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-import { Button, TextField } from "@mui/material";
+import { Button, Chip, Stack, TextField } from "@mui/material";
 import "@fontsource/roboto/400.css";
 
 import {
@@ -21,6 +21,7 @@ const initialBlogInfo: Blog = {
   id: crypto.randomUUID(),
   title: "",
   content: "",
+  tags: [],
 };
 
 export default function BlogForm() {
@@ -34,6 +35,10 @@ export default function BlogForm() {
     (state: { blog: InitialStateProps }) => state.blog.isUpdate
   );
 
+  const tagList = useSelector(
+    (state: { blog: InitialStateProps }) => state.blog.tagList
+  );
+
   function blogOnChangeHandler(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -43,6 +48,17 @@ export default function BlogForm() {
       addBlogInfo({
         ...blogInfo,
         [name]: value,
+      })
+    );
+  }
+
+  function tagsHandler(tag: string) {
+    console.log(tag);
+
+    dispatch(
+      addBlogInfo({
+        ...blogInfo,
+        tags: [...blogInfo.tags, tag],
       })
     );
   }
@@ -86,7 +102,6 @@ export default function BlogForm() {
           value={blogInfo.title}
           onChange={blogOnChangeHandler}
         />
-
         <TextField
           name="content"
           multiline
@@ -100,6 +115,19 @@ export default function BlogForm() {
           onChange={blogOnChangeHandler}
         />
 
+        <Stack direction="row" spacing={1}>
+          {tagList.map((tag, index) => {
+            return (
+              <Chip
+                label={tag.toLowerCase()}
+                key={index}
+                onClick={() => {
+                  tagsHandler(tag);
+                }}
+              />
+            );
+          })}
+        </Stack>
         {isUpdate ? (
           <Button
             variant="contained"

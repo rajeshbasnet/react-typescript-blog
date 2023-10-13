@@ -15,9 +15,12 @@ const blogInfo: Blog = {
   id: crypto.randomUUID(),
   title: "",
   content: "",
+  tags: [],
 };
 
 const addBlogFn = (state: InitialStateProps, action: BlogPayload<Blog>) => {
+  console.log(action.payload);
+
   state.blog.push(action.payload);
 };
 
@@ -77,10 +80,20 @@ const resetErrorFn = (state: InitialStateProps) => {
   };
 };
 
+const addTagListFn = (
+  state: InitialStateProps,
+  action: PayloadAction<string>
+) => {
+  state.tagList.push(action.payload);
+};
+
+const tagList = ["sports", "life", "adventures", "social-life"];
+
 const initialState: InitialStateProps = {
   blog: [],
   blogInfo,
   isUpdate: false,
+  tagList,
   success: {
     status: false,
     message: "",
@@ -104,6 +117,7 @@ export const blogSlice = createSlice({
     addError: addErrorFn,
     resetSuccess: resetSuccessFn,
     resetError: resetErrorFn,
+    addTagList: addTagListFn,
   },
 });
 
@@ -117,6 +131,7 @@ export const {
   addError,
   resetSuccess,
   resetError,
+  addTagList,
 } = blogSlice.actions;
 
 export default blogSlice.reducer;
