@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -39,6 +39,8 @@ export default function BlogForm() {
     (state: { blog: InitialStateProps }) => state.blog.tagList
   );
 
+  const [timeoutID, setTimeoutID] = useState<number | null>(null);
+
   function blogOnChangeHandler(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -76,7 +78,7 @@ export default function BlogForm() {
       dispatch(
         addSuccess({
           status: true,
-          message: `Blog ${isUpdate ? "update" : "added"} successfully`,
+          message: `Blog ${isUpdate ? "updated" : "added"} successfully`,
         })
       );
       dispatch(addBlogInfo(initialBlogInfo));
@@ -85,9 +87,18 @@ export default function BlogForm() {
         dispatch(resetSuccess());
       }, 2000);
 
-      clearTimeout(timeoutID);
+      setTimeoutID(timeoutID);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (timeoutID) {
+        clearTimeout(timeoutID);
+        setTimeoutID(null);
+      }
+    };
+  });
 
   return (
     <section className="blog__form__section">
