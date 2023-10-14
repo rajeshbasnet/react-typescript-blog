@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import "@fontsource/roboto/500.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlogForm from "../form/BlogForm";
 import { useDispatch } from "react-redux";
 import {
@@ -39,6 +39,8 @@ export default function BlogList() {
     (state: { blog: InitialStateProps }) => state.blog.isUpdate
   );
 
+  const [timeoutID, setTimeoutID] = useState<number | null>(null);
+
   function updateIsFormInUpdateStatus() {
     dispatch(updateIsUpdate());
   }
@@ -59,13 +61,18 @@ export default function BlogList() {
       })
     );
 
-    new Promise<number>((resolve) => {
-      const timeoutID = setTimeout(() => {
-        dispatch(resetSuccess());
-      }, 2000);
-      resolve(timeoutID);
-    }).then((id) => clearTimeout(id));
+    const timeoutID = setTimeout(() => {
+      dispatch(resetSuccess());
+    }, 1000);
+
+    setTimeoutID(timeoutID);
   }
+
+  useEffect(() => {
+    return () => {
+      timeoutID && clearTimeout(timeoutID);
+    };
+  });
 
   return (
     <section className="blog__list__section">
