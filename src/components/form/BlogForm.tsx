@@ -54,6 +54,11 @@ export default function BlogForm() {
     );
   }
 
+  function updateIsFormInUpdateStatus() {
+    dispatch(updateIsUpdate());
+    dispatch(addBlogInfo(initialBlogInfo));
+  }
+
   function tagsHandler(tag: string) {
     dispatch(
       addBlogInfo({
@@ -138,17 +143,27 @@ export default function BlogForm() {
           })}
         </Stack>
         {isUpdate ? (
-          <Button
-            variant="contained"
-            style={{ margin: "0.5rem 0" }}
-            type="submit"
-          >
-            Update your post
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              style={{ margin: "1rem 0" }}
+              type="submit"
+            >
+              Update your post
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              style={{ margin: "1rem 1rem" }}
+              onClick={updateIsFormInUpdateStatus}
+            >
+              Close
+            </Button>
+          </>
         ) : (
           <Button
             variant="contained"
-            style={{ margin: "0.5rem 0" }}
+            style={{ margin: "1rem 0" }}
             type="submit"
           >
             Add your post

@@ -125,7 +125,7 @@ export default function BlogList() {
               </div>
             </Box>
 
-            <Dialog open={isUpdate}>
+            <Dialog open={isUpdate} onClose={updateIsFormInUpdateStatus}>
               <DialogTitle id="alert-dialog-title">
                 {"Update your Post Details"}
               </DialogTitle>
