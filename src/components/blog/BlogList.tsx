@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { InitialStateProps } from "../../types/InitialStateProps.types";
+// import { useSelector } from "react-redux";
+// import { InitialStateProps } from "../../types/InitialStateProps.types";
 import {
   Box,
   Button,
@@ -14,55 +14,56 @@ import {
 import "@fontsource/roboto/500.css";
 import React, { useEffect, useState } from "react";
 import BlogForm from "../form/BlogForm";
-import { useDispatch } from "react-redux";
-import {
-  addBlogInfo,
-  addSuccess,
-  removeBlog,
-  resetSuccess,
-  updateIsUpdate,
-} from "../../redux/slice";
+// import { useDispatch } from "react-redux";
+// import {
+//   addBlogInfo,
+//   addSuccess,
+//   removeBlog,
+//   resetSuccess,
+//   updateIsUpdate,
+// } from "../../redux/slice";
+import { useUseContext } from "../../pages/homepage/Homepage";
 
 /**
- * TODO : Add badge feature in blog - tags
  *
  * @returns BlogList
  */
 export default function BlogList() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const blogList = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.blog
-  );
+  const blogStateValue = useUseContext();
 
-  const isUpdate = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.isUpdate
-  );
+  const {
+    initialState: { blog: blogList, isUpdate },
+    updateIsUpdateFn,
+    addOrUpdateBlogInfoFn,
+    addSuccessFn,
+    resetSuccessFn,
+    removeBlogFn,
+  } = blogStateValue;
 
   const [timeoutID, setTimeoutID] = useState<number | null>(null);
 
   function updateIsFormInUpdateStatus() {
-    dispatch(updateIsUpdate());
+    updateIsUpdateFn();
   }
 
   function loadUpdateBlogModal(id: string | undefined) {
     updateIsFormInUpdateStatus();
 
     const foundBlog = id && blogList.find((blog) => blog.id === id);
-    foundBlog && dispatch(addBlogInfo(foundBlog));
+    foundBlog && addOrUpdateBlogInfoFn(foundBlog);
   }
 
   function deleteBlog(id: string | undefined) {
-    id && dispatch(removeBlog(id));
-    dispatch(
-      addSuccess({
-        status: true,
-        message: "Blog removed successfully",
-      })
-    );
+    id && removeBlogFn(id);
+    addSuccessFn({
+      status: true,
+      message: "Blog removed successfully",
+    });
 
     const timeoutID = setTimeout(() => {
-      dispatch(resetSuccess());
+      resetSuccessFn();
     }, 1000);
 
     setTimeoutID(timeoutID);

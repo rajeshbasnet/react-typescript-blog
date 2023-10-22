@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 import { Button, Chip, Stack, TextField } from "@mui/material";
 import "@fontsource/roboto/400.css";
 
-import {
-  addBlog,
-  addBlogInfo,
-  addSuccess,
-  resetSuccess,
-  updateBlog,
-  updateIsUpdate,
-} from "../../redux/slice";
+// import {
+// addBlog,
+// addBlogInfo,
+// addSuccess,
+// resetSuccess,
+// updateBlog,
+// updateIsUpdate,
+// } from "../../redux/slice";
 import { Blog } from "../../types/Blog.types";
-import { InitialStateProps } from "../../types/InitialStateProps.types";
+// import { InitialStateProps } from "../../types/InitialStateProps.types";
+import { useUseContext } from "../../pages/homepage/Homepage";
+// import BlogContext from "../../contexts/BlogContext";
 
 const initialBlogInfo: Blog = {
   id: crypto.randomUUID(),
@@ -25,19 +27,19 @@ const initialBlogInfo: Blog = {
 };
 
 export default function BlogForm() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const blogInfo = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.blogInfo
-  );
+  const blogStateValue = useUseContext();
 
-  const isUpdate = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.isUpdate
-  );
-
-  const tagList = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.tagList
-  );
+  const {
+    initialState: { blogInfo, isUpdate, tagList },
+    addOrUpdateBlogInfoFn,
+    updateIsUpdateFn,
+    addBlogFn,
+    updateBlogFn,
+    addSuccessFn,
+    resetSuccessFn,
+  } = blogStateValue;
 
   const [timeoutID, setTimeoutID] = useState<number | null>(null);
 
@@ -46,26 +48,22 @@ export default function BlogForm() {
   ) {
     event.preventDefault();
     const { name, value } = event.target;
-    dispatch(
-      addBlogInfo({
-        ...blogInfo,
-        [name]: value,
-      })
-    );
+    addOrUpdateBlogInfoFn({
+      ...blogInfo,
+      [name]: value,
+    });
   }
 
   function updateIsFormInUpdateStatus() {
-    dispatch(updateIsUpdate());
-    dispatch(addBlogInfo(initialBlogInfo));
+    updateIsUpdateFn();
+    addOrUpdateBlogInfoFn(initialBlogInfo);
   }
 
   function tagsHandler(tag: string) {
-    dispatch(
-      addBlogInfo({
-        ...blogInfo,
-        tags: [...new Set([...blogInfo.tags, tag])],
-      })
-    );
+    addOrUpdateBlogInfoFn({
+      ...blogInfo,
+      tags: [...new Set([...blogInfo.tags, tag])],
+    });
   }
 
   function addBlogHandler(event: React.FormEvent) {
@@ -73,21 +71,19 @@ export default function BlogForm() {
 
     if (blogInfo.title && blogInfo.content) {
       if (!isUpdate) {
-        dispatch(addBlog(blogInfo));
+        addBlogFn(blogInfo);
       } else {
-        dispatch(updateBlog(blogInfo));
-        dispatch(updateIsUpdate());
+        updateBlogFn(blogInfo);
+        updateIsUpdateFn();
       }
-      dispatch(
-        addSuccess({
-          status: true,
-          message: `Blog ${isUpdate ? "updated" : "added"} successfully`,
-        })
-      );
-      dispatch(addBlogInfo(initialBlogInfo));
+      addSuccessFn({
+        status: true,
+        message: `Blog ${isUpdate ? "updated" : "added"} successfully`,
+      });
+      addOrUpdateBlogInfoFn(initialBlogInfo);
 
       const timeoutID = setTimeout(() => {
-        dispatch(resetSuccess());
+        resetSuccessFn();
       }, 2000);
 
       setTimeoutID(timeoutID);
@@ -105,7 +101,7 @@ export default function BlogForm() {
 
   return (
     <section className="blog__form__section">
-      <form className="w-full" onSubmit={addBlogHandler}>
+      <form id="blog-form" className="w-full" onSubmit={addBlogHandler}>
         <TextField
           name="title"
           className="w-full"

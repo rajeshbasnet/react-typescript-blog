@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import Blog from "../../components/blog/Blog";
 import { Alert } from "@mui/material";
-import { useSelector } from "react-redux";
-import { InitialStateProps } from "../../types/InitialStateProps.types";
+// import { useSelector } from "react-redux";
+// import { InitialStateProps } from "../../types/InitialStateProps.types";
+import { BlogContextProps } from "../../App";
+import BlogContext from "../../contexts/BlogContext";
 
-//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
+export function useUseContext() {
+  const blogStateValue = useContext<BlogContextProps | undefined>(BlogContext);
 
+  if (blogStateValue == undefined) {
+    throw new Error("Undefined value for BlogContextProps");
+  }
+  return blogStateValue;
+}
+
+// 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
 const Homepage: React.FC = () => {
-  const success = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.success
-  );
+  const blogStateValue = useUseContext();
 
-  const error = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog.error
-  );
+  const success = blogStateValue.initialState.success;
+
+  const error = blogStateValue.initialState.error;
 
   const { status: successStatus, message: successMessage } = success;
 
