@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { InitialStateProps } from "../types/InitialStateProps.types";
+import { BlogContextProps } from "../App";
 
-export default createContext<InitialStateProps | null>(null);
+export default createContext<BlogContextProps | undefined>(undefined);

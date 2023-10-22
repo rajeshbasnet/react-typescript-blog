@@ -10,6 +10,20 @@ import {
 } from "./types/InitialStateProps.types";
 import { useState } from "react";
 
+export type BlogContextProps = {
+  initialState: InitialStateProps;
+  addBlogFn: (blog: Blog) => void;
+  updateBlogFn: (blog: Blog) => void;
+  removeBlogFn: (payload: string) => void;
+  addOrUpdateBlogInfoFn: (payload: Blog) => void;
+  updateIsUpdateFn: () => void;
+  addSuccessFn: (payload: StatusProps) => void;
+  addErrorFn: (payload: StatusProps) => void;
+  resetSuccessFn: () => void;
+  resetErrorFn: () => void;
+  addTagListFn: (payload: string) => void;
+};
+
 function App() {
   const blogInfo: Blog = {
     id: crypto.randomUUID(),
@@ -101,7 +115,21 @@ function App() {
   };
 
   return (
-    <BlogContext.Provider value={initialState}>
+    <BlogContext.Provider
+      value={{
+        initialState,
+        addBlogFn,
+        updateBlogFn,
+        removeBlogFn,
+        addOrUpdateBlogInfoFn,
+        updateIsUpdateFn,
+        addSuccessFn,
+        addErrorFn,
+        resetSuccessFn,
+        resetErrorFn,
+        addTagListFn,
+      }}
+    >
       <Homepage />
     </BlogContext.Provider>
   );
