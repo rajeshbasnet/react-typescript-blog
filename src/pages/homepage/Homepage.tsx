@@ -8,6 +8,7 @@ import BlogContext from "../../contexts/BlogContext";
 
 export function useUseContext() {
   const blogStateValue = useContext<BlogContextProps | undefined>(BlogContext);
+  console.log(blogStateValue);
 
   if (blogStateValue == undefined) {
     throw new Error("Undefined value for BlogContextProps");
