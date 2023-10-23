@@ -3,8 +3,7 @@ import Blog from "../../components/blog/Blog";
 import { Alert } from "@mui/material";
 // import { useSelector } from "react-redux";
 // import { InitialStateProps } from "../../types/InitialStateProps.types";
-import { BlogContextProps } from "../../App";
-import BlogContext from "../../contexts/BlogContext";
+import BlogContext, { BlogContextProps } from "../../contexts/BlogContext";
 
 export function useUseContext() {
   const blogStateValue = useContext<BlogContextProps | undefined>(BlogContext);
@@ -20,13 +19,10 @@ export function useUseContext() {
 const Homepage: React.FC = () => {
   const blogStateValue = useUseContext();
 
-  const success = blogStateValue.initialState.success;
-
-  const error = blogStateValue.initialState.error;
-
-  const { status: successStatus, message: successMessage } = success;
-
-  const { status: errorStatus, message: errorMessage } = error;
+  const {
+    success: { status: successStatus, message: successMessage },
+    error: { status: errorStatus, message: errorMessage },
+  } = blogStateValue;
 
   return (
     <>

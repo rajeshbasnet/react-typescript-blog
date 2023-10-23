@@ -32,7 +32,9 @@ export default function BlogForm() {
   const blogStateValue = useUseContext();
 
   const {
-    initialState: { blogInfo, isUpdate, tagList },
+    blogInfo,
+    isUpdate,
+    tagList,
     addOrUpdateBlogInfoFn,
     updateIsUpdateFn,
     addBlogFn,

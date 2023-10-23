@@ -34,7 +34,8 @@ export default function BlogList() {
   const blogStateValue = useUseContext();
 
   const {
-    initialState: { blog: blogList, isUpdate },
+    blogs: blogList,
+    isUpdate,
     updateIsUpdateFn,
     addOrUpdateBlogInfoFn,
     addSuccessFn,

@@ -5,7 +5,7 @@ import Homepage from "./pages/homepage/Homepage";
 import BlogContext from "./contexts/BlogContext";
 import { Blog } from "./types/Blog.types";
 import { StatusProps } from "./types/InitialStateProps.types";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 function App() {
   const [blogInfo, setBlogInfo] = useState<Blog>({
@@ -36,78 +36,113 @@ function App() {
 
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const addBlogFn = (payload: Blog) => {
-    setBlogs([...blogs, payload]);
-  };
+  const addBlogFn = useCallback(
+    (payload: Blog) => {
+      console.log("hello");
+      setBlogs([...blogs, payload]);
+    },
+    [blogs]
+  );
 
-  const updateBlogFn = (payload: Blog) => {
-    const newBlogList = blogs.filter((blogItem) => blogItem.id !== payload.id);
-    newBlogList.push(payload);
-    setBlogs(newBlogList);
-  };
+  const updateBlogFn = useCallback(
+    (payload: Blog) => {
+      const newBlogList = blogs.filter(
+        (blogItem) => blogItem.id !== payload.id
+      );
+      newBlogList.push(payload);
+      setBlogs(newBlogList);
+    },
+    [blogs]
+  );
 
-  const removeBlogFn = (id: string) => {
-    const newBlogList = blogs.filter((blogItem) => blogItem.id !== id);
-    setBlogs(newBlogList);
-  };
+  const removeBlogFn = useCallback(
+    (id: string) => {
+      const newBlogList = blogs.filter((blogItem) => blogItem.id !== id);
+      setBlogs(newBlogList);
+    },
+    [blogs]
+  );
 
-  const addOrUpdateBlogInfoFn = (payload: Blog) => {
+  const addOrUpdateBlogInfoFn = useCallback((payload: Blog) => {
     setBlogInfo(payload);
-  };
+  }, []);
 
-  const updateIsUpdateFn = () => {
+  const updateIsUpdateFn = useCallback(() => {
     setIsUpdate(!isUpdate);
-  };
+  }, [isUpdate]);
 
-  const addSuccessFn = (payload: StatusProps) => {
+  const addSuccessFn = useCallback((payload: StatusProps) => {
     setSuccess(payload);
-  };
+  }, []);
 
-  const addErrorFn = (payload: StatusProps) => {
+  const addErrorFn = useCallback((payload: StatusProps) => {
     setError(payload);
-  };
+  }, []);
 
-  const resetSuccessFn = () => {
+  const resetSuccessFn = useCallback(() => {
     setSuccess({
       ...success,
       status: false,
       message: "",
     });
-  };
+  }, [success]);
 
-  const resetErrorFn = () => {
+  const resetErrorFn = useCallback(() => {
     setError({
       ...error,
       status: false,
       message: "",
     });
-  };
+  }, [error]);
 
-  const addTagListFn = (payload: string) => {
-    setTagList([...tagList, payload]);
-  };
+  const addTagListFn = useCallback(
+    (payload: string) => {
+      setTagList([...tagList, payload]);
+    },
+    [tagList]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      blogInfo,
+      tagList,
+      blogs,
+      success,
+      error,
+      isUpdate,
+      addBlogFn,
+      updateBlogFn,
+      removeBlogFn,
+      addOrUpdateBlogInfoFn,
+      updateIsUpdateFn,
+      addSuccessFn,
+      addErrorFn,
+      resetSuccessFn,
+      resetErrorFn,
+      addTagListFn,
+    }),
+    [
+      blogInfo,
+      tagList,
+      blogs,
+      success,
+      error,
+      isUpdate,
+      addBlogFn,
+      updateBlogFn,
+      removeBlogFn,
+      addOrUpdateBlogInfoFn,
+      updateIsUpdateFn,
+      addSuccessFn,
+      addErrorFn,
+      resetErrorFn,
+      resetSuccessFn,
+      addTagListFn,
+    ]
+  );
 
   return (
-    <BlogContext.Provider
-      value={{
-        blogInfo,
-        tagList,
-        blogs,
-        success,
-        error,
-        isUpdate,
-        addBlogFn,
-        updateBlogFn,
-        removeBlogFn,
-        addOrUpdateBlogInfoFn,
-        updateIsUpdateFn,
-        addSuccessFn,
-        addErrorFn,
-        resetSuccessFn,
-        resetErrorFn,
-        addTagListFn,
-      }}
-    >
+    <BlogContext.Provider value={contextValue}>
       <Homepage />
     </BlogContext.Provider>
   );
