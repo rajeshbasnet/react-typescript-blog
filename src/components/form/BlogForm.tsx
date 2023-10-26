@@ -15,7 +15,8 @@ import {
   updateIsUpdate,
 } from "../../redux/slice";
 import { Blog } from "../../types/Blog.types";
-import { InitialStateProps } from "../../types/InitialStateProps.types";
+import { BlogDispatch, BlogRootState } from "../../redux/store";
+import { addBlog_AC } from "../../redux/action.creators";
 
 const initialBlogInfo: Blog = {
   id: crypto.randomUUID(),
@@ -25,10 +26,10 @@ const initialBlogInfo: Blog = {
 };
 
 export default function BlogForm() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<BlogDispatch>();
 
   const { blogInfo, isUpdate, tagList } = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog
+    (state: BlogRootState) => state.blog
   );
 
   const [timeoutID, setTimeoutID] = useState<number | null>(null);
@@ -64,12 +65,7 @@ export default function BlogForm() {
     event.preventDefault();
 
     if (blogInfo.title && blogInfo.content) {
-      if (!isUpdate) {
-        dispatch(addBlog(blogInfo));
-      } else {
-        dispatch(updateBlog(blogInfo));
-        dispatch(updateIsUpdate());
-      }
+      dispatch(addBlog_AC(blogInfo));
       dispatch(
         addSuccess({
           status: true,

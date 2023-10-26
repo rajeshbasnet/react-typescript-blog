@@ -22,6 +22,7 @@ import {
   resetSuccess,
   updateIsUpdate,
 } from "../../redux/slice";
+import { BlogRootState } from "../../redux/store";
 
 /**
  *
@@ -31,7 +32,7 @@ export default function BlogList() {
   const dispatch = useDispatch();
 
   const { blog: blogList, isUpdate } = useSelector(
-    (state: { blog: InitialStateProps }) => state.blog
+    (state: BlogRootState) => state.blog
   );
 
   const [timeoutID, setTimeoutID] = useState<number | null>(null);

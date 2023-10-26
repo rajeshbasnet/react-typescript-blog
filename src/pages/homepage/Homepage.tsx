@@ -2,14 +2,14 @@ import React from "react";
 import Blog from "../../components/blog/Blog";
 import { Alert } from "@mui/material";
 import { useSelector } from "react-redux";
-import { InitialStateProps } from "../../types/InitialStateProps.types";
+import { BlogRootState } from "../../redux/store";
 
 // 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
 const Homepage: React.FC = () => {
   const {
     success: { status: successStatus, message: successMessage },
     error: { status: errorStatus, message: errorMessage },
-  } = useSelector((state: { blog: InitialStateProps }) => state.blog);
+  } = useSelector((state: BlogRootState) => state.blog);
 
   return (
     <>
