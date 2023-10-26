@@ -19,8 +19,6 @@ const blogInfo: Blog = {
 };
 
 const addBlogFn = (state: InitialStateProps, action: BlogPayload<Blog>) => {
-  console.log(action.payload);
-
   state.blog.push(action.payload);
 };
 

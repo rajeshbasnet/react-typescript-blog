@@ -6,8 +6,10 @@ export type StatusProps = {
 };
 
 export type InitialStateProps = {
+  blogInfo: Blog;
   blog: Blog[];
   isUpdate: boolean;
+  tagList: string[];
   success: StatusProps;
   error: StatusProps;
 };
