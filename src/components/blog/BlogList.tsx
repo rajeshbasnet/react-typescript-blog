@@ -1,5 +1,3 @@
-// import { useSelector } from "react-redux";
-// import { InitialStateProps } from "../../types/InitialStateProps.types";
 import {
   Box,
   Button,
@@ -14,14 +12,6 @@ import {
 import "@fontsource/roboto/500.css";
 import React, { useEffect, useState } from "react";
 import BlogForm from "../form/BlogForm";
-// import { useDispatch } from "react-redux";
-// import {
-//   addBlogInfo,
-//   addSuccess,
-//   removeBlog,
-//   resetSuccess,
-//   updateIsUpdate,
-// } from "../../redux/slice";
 import { useUseContext } from "../../pages/homepage/Homepage";
 
 /**
@@ -29,8 +19,6 @@ import { useUseContext } from "../../pages/homepage/Homepage";
  * @returns BlogList
  */
 export default function BlogList() {
-  // const dispatch = useDispatch();
-
   const blogStateValue = useUseContext();
 
   const {

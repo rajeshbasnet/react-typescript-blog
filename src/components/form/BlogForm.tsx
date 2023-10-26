@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-// import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-
 import { Button, Chip, Stack, TextField } from "@mui/material";
 import "@fontsource/roboto/400.css";
 
-// import {
-// addBlog,
-// addBlogInfo,
-// addSuccess,
-// resetSuccess,
-// updateBlog,
-// updateIsUpdate,
-// } from "../../redux/slice";
 import { Blog } from "../../types/Blog.types";
-// import { InitialStateProps } from "../../types/InitialStateProps.types";
 import { useUseContext } from "../../pages/homepage/Homepage";
-// import BlogContext from "../../contexts/BlogContext";
 
 const initialBlogInfo: Blog = {
   id: crypto.randomUUID(),
@@ -27,8 +14,6 @@ const initialBlogInfo: Blog = {
 };
 
 export default function BlogForm() {
-  // const dispatch = useDispatch();
-
   const blogStateValue = useUseContext();
 
   const {

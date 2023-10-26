@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import Blog from "../../components/blog/Blog";
 import { Alert } from "@mui/material";
-// import { useSelector } from "react-redux";
-// import { InitialStateProps } from "../../types/InitialStateProps.types";
 import BlogContext, { BlogContextProps } from "../../contexts/BlogContext";
 
 export function useUseContext() {
