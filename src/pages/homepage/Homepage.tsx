@@ -13,7 +13,6 @@ export function useUseContext() {
   return blogStateValue;
 }
 
-// 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
 const Homepage: React.FC = () => {
   const blogStateValue = useUseContext();
 
